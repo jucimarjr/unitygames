@@ -39,8 +39,7 @@ public class EnemyShoot : MonoBehaviour {
             if (Enemies.Count <= 0)
             {
                 CanShoot = false;
-                GameOver.text = "You Win";
-                GameObject.Find("Player").GetComponent<ShootScript>().CanShoot = false;
+                FindObjectOfType<PlayerDie>().Win();
                 yield break;
             }
             int Index = Random.Range(0, Enemies.Count - 1);

@@ -10,6 +10,7 @@ public class PlayerDie : MonoBehaviour
     public Text gameOver;
     public Text LifesText;
     Vector3 SpawnPosition;
+    public GameObject PauseMenu;
     // Use this for initialization
     void Start()
     {
@@ -49,6 +50,14 @@ public class PlayerDie : MonoBehaviour
         GetComponent<SpriteRenderer>().enabled = false;
         GetComponent<ShootScript>().CanShoot = false;
         gameOver.text = "You Lose";
+        PauseMenu.SetActive(true);
+    }
+
+    public void Win()
+    {
+        PauseMenu.SetActive(true);
+        gameOver.text = "You Win";
+        GetComponent<ShootScript>().CanShoot = false;
     }
 
     public void OnCollisionEnter2D(Collision2D collision)
