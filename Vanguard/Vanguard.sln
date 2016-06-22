@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2015
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vanguard.CSharp", "Vanguard.CSharp.csproj", "{D692BA1F-B78E-FD7C-0327-85E1325C0ADE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D692BA1F-B78E-FD7C-0327-85E1325C0ADE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D692BA1F-B78E-FD7C-0327-85E1325C0ADE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D692BA1F-B78E-FD7C-0327-85E1325C0ADE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D692BA1F-B78E-FD7C-0327-85E1325C0ADE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
