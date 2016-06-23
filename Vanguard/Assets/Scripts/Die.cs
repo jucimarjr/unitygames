@@ -21,6 +21,8 @@ public class Die : MonoBehaviour
     void Explode()
     {
         GetComponent<SpriteRenderer>().enabled = false;
+        GetComponent<Collider2D>().enabled = false;
+        GetComponent<Shoot>().enabled = false;
         GameObject NewExplosion = (GameObject)Instantiate(Explosion, transform.position, Quaternion.identity);
     }
 
@@ -28,6 +30,8 @@ public class Die : MonoBehaviour
     {
         transform.position = Camera.main.ViewportToWorldPoint(SpawnPointCameraRelative);
         GetComponent<SpriteRenderer>().enabled = true;
+        GetComponent<Collider2D>().enabled = true;
+        GetComponent<Shoot>().enabled = true;
     }
 
     void ReduceLife()
@@ -39,8 +43,9 @@ public class Die : MonoBehaviour
 
     public IEnumerator OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Wall"))
+        if (collision.gameObject.CompareTag("Wall") || collision.gameObject.CompareTag("BulletEnemy"))
         {
+            if (collision.gameObject.CompareTag("BulletEnemy")) Destroy(collision.gameObject);
             ReduceLife();
             Explode();
             yield return new WaitForSeconds(1);

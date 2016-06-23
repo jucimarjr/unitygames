@@ -5,10 +5,6 @@ public class ChangeDirection : MonoBehaviour {
     public Vector2 Direction;
     public Vector3 NewSpawnPoint;
     public float Angle;
-    public float RightLimit;
-    public float LeftLimit;
-    public float UpLimit;
-    public float DownLimit;
     // Use this for initialization
     void Start () {
 	
@@ -29,7 +25,9 @@ public class ChangeDirection : MonoBehaviour {
             coll.gameObject.GetComponent<AutoMovement>().ChangeAngle(Angle);
             coll.gameObject.GetComponent<Die>().SpawnPointCameraRelative = NewSpawnPoint;
             Camera.main.GetComponent<AutoMovement>().ChangeDirection(Direction);
-            Camera.main.GetComponent<CameraLimits>().SetLimits(RightLimit, LeftLimit, UpLimit, DownLimit);
+            Camera.main.GetComponent<CameraLimits>().ChangeLimits();
+            Camera.main.transform.position = transform.position - Vector3.forward * 10;
+            Destroy(gameObject);
         }
     }
 }
