@@ -63,17 +63,20 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\EnemyDie.cs" />
-    <Compile Include="Assets\EnemyShoot.cs" />
-    <Compile Include="Assets\LevelScript.cs" />
+    <Compile Include="Assets\ScoreControl.cs" />
     <Compile Include="Assets\Scripts\AutoMovement.cs" />
     <Compile Include="Assets\Scripts\CameraLimits.cs" />
     <Compile Include="Assets\Scripts\CameraRelatedLimits.cs" />
     <Compile Include="Assets\Scripts\ChangeDirection.cs" />
     <Compile Include="Assets\Scripts\ControlMovement.cs" />
     <Compile Include="Assets\Scripts\DestroyByTime.cs" />
+    <Compile Include="Assets\Scripts\DestroyOutScreen.cs" />
     <Compile Include="Assets\Scripts\Die.cs" />
+    <Compile Include="Assets\Scripts\EnemyDie.cs" />
+    <Compile Include="Assets\Scripts\EnemyShoot.cs" />
+    <Compile Include="Assets\Scripts\LevelScript.cs" />
     <Compile Include="Assets\Scripts\Shoot.cs" />
+    <Compile Include="Assets\WinLevel.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>

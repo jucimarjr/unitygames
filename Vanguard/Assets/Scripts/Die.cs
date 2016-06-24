@@ -1,15 +1,19 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class Die : MonoBehaviour
 {
     public int Lifes;
+    public Text LifesText;
+    public Text GameOverText;
     public Vector3 SpawnPointCameraRelative;
     public GameObject Explosion;
     // Use this for initialization
     void Start()
     {
         Respawn();
+        LifesText.text = ""+Lifes;
     }
 
     // Update is called once per frame
@@ -37,8 +41,15 @@ public class Die : MonoBehaviour
     void ReduceLife()
     {
         Lifes--;
+        LifesText.text = ""+Lifes;
         if (Lifes < 0)
             Lifes = 0;
+    }
+
+    void GameOver()
+    {
+        GameOverText.text = "GameOver";
+        Destroy(gameObject);
     }
 
     public IEnumerator OnCollisionEnter2D(Collision2D collision)
@@ -48,6 +59,11 @@ public class Die : MonoBehaviour
             if (collision.gameObject.CompareTag("BulletEnemy")) Destroy(collision.gameObject);
             ReduceLife();
             Explode();
+            if(Lifes <= 0)
+            {
+                GameOver();
+                yield return 0;
+            }
             yield return new WaitForSeconds(1);
             Respawn();
         }
