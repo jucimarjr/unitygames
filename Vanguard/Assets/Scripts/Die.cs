@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Die : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class Die : MonoBehaviour
     public Text GameOverText;
     public Vector3 SpawnPointCameraRelative;
     public GameObject Explosion;
+    public bool gameover = false;
     // Use this for initialization
     void Start()
     {
@@ -19,7 +21,13 @@ public class Die : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (gameover)
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                SceneManager.LoadScene("Menu");
+            }
+        }
     }
 
     void Explode()
@@ -48,8 +56,9 @@ public class Die : MonoBehaviour
 
     void GameOver()
     {
+        gameover = true;
         GameOverText.text = "GameOver";
-        Destroy(gameObject);
+        
     }
 
     public IEnumerator OnCollisionEnter2D(Collision2D collision)
@@ -62,7 +71,7 @@ public class Die : MonoBehaviour
             if(Lifes <= 0)
             {
                 GameOver();
-                yield return 0;
+                yield break;
             }
             yield return new WaitForSeconds(1);
             Respawn();

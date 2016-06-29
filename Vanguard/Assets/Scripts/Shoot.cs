@@ -4,6 +4,7 @@ using System.Collections;
 public class Shoot : MonoBehaviour {
     public float velocity;
     public GameObject BulletPrefab;
+    public bool CanShoot = false;
 	// Use this for initialization
 	void Start () {
         Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("BulletPlayer"), LayerMask.NameToLayer("BulletPlayer"));
@@ -31,7 +32,40 @@ public class Shoot : MonoBehaviour {
         {
             shoot(Vector2.down);
         }
-	}
+
+        if (Input.touchCount > 0)
+        {
+            foreach (Touch touch in Input.touches)
+            {
+                if(touch.phase == TouchPhase.Began)
+                {
+                    Vector3 pos = Camera.main.ScreenToViewportPoint(touch.position);
+                    if (pos.y < 0.5f)
+                    {
+                        if (pos.x > 0.5f)
+                        {
+                            shoot(Vector2.right);
+                        }
+                        else
+                        {
+                            shoot(Vector2.left);
+                        }
+                    }
+                    else
+                    {
+                        if (pos.x > 0.5f)
+                        {
+                            shoot(Vector2.up);
+                        }
+                        else
+                        {
+                            shoot(Vector2.down);
+                        }
+                    }
+                }                
+            }        
+        }
+    }
 
     public void shoot(Vector2 direction)
     {

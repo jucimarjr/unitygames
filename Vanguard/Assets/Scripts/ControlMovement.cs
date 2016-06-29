@@ -7,6 +7,7 @@ public class ControlMovement : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         body = GetComponent<Rigidbody2D>();
+        
 	}
 	
 	// Update is called once per frame
@@ -25,6 +26,35 @@ public class ControlMovement : MonoBehaviour {
         else if (Input.GetKey(KeyCode.RightArrow))
         {
             body.velocity += Vector2.right * Velocity;
+        }
+        else if(Input.touchCount > 0)
+        {
+            foreach(Touch touch in Input.touches)
+            {
+                Vector3 pos = Camera.main.ScreenToViewportPoint(touch.position);
+                if (pos.y < 0.5f)
+                {
+                    if (pos.x > 0.5f)
+                    {
+                        body.velocity += Vector2.right * Velocity;
+                    }
+                    else
+                    {
+                        body.velocity += Vector2.left * Velocity;
+                    }
+                }
+                else
+                {
+                    if (pos.x > 0.5f)
+                    {
+                        body.velocity += Vector2.up * Velocity;
+                    }
+                    else
+                    {
+                        body.velocity += Vector2.down * Velocity;
+                    }
+                }
+            }            
         }
         else
         {
