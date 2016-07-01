@@ -36,22 +36,22 @@ public class ControlMovement : MonoBehaviour {
                 {
                     if (pos.x > 0.5f)
                     {
-                        body.velocity += Vector2.right * Velocity;
+                        body.velocity = Vector2.right * Velocity;
                     }
                     else
                     {
-                        body.velocity += Vector2.left * Velocity;
+                        body.velocity = Vector2.left * Velocity;
                     }
                 }
                 else
                 {
                     if (pos.x > 0.5f)
                     {
-                        body.velocity += Vector2.up * Velocity;
+                        body.velocity = Vector2.up * Velocity;
                     }
                     else
                     {
-                        body.velocity += Vector2.down * Velocity;
+                        body.velocity = Vector2.down * Velocity;
                     }
                 }
             }            
