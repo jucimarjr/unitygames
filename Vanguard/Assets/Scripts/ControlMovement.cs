@@ -14,22 +14,23 @@ public class ControlMovement : MonoBehaviour {
 	void Update () {
         if (Input.GetKey(KeyCode.UpArrow))
         {
-            body.velocity += Vector2.up * Velocity;
-        }else if (Input.GetKey(KeyCode.DownArrow))
+            body.velocity = Vector2.up * Velocity;
+        }
+        else if (Input.GetKey(KeyCode.DownArrow))
         {
-            body.velocity += Vector2.down * Velocity;
+            body.velocity = Vector2.down * Velocity;
         }
         else if (Input.GetKey(KeyCode.LeftArrow))
         {
-            body.velocity += Vector2.left * Velocity;
+            body.velocity = Vector2.left * Velocity;
         }
         else if (Input.GetKey(KeyCode.RightArrow))
         {
-            body.velocity += Vector2.right * Velocity;
+            body.velocity = Vector2.right * Velocity;
         }
-        else if(Input.touchCount > 0)
+        else if (Input.touchCount > 0)
         {
-            foreach(Touch touch in Input.touches)
+            foreach (Touch touch in Input.touches)
             {
                 Vector3 pos = Camera.main.ScreenToViewportPoint(touch.position);
                 if (pos.y < 0.5f)
@@ -54,7 +55,7 @@ public class ControlMovement : MonoBehaviour {
                         body.velocity = Vector2.down * Velocity;
                     }
                 }
-            }            
+            }
         }
         else
         {

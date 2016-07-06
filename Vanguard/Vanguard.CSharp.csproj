@@ -63,7 +63,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\EnemiesMovement.cs" />
     <Compile Include="Assets\Scripts\AutoMovement.cs" />
     <Compile Include="Assets\Scripts\CameraLimits.cs" />
     <Compile Include="Assets\Scripts\CameraRelatedLimits.cs" />
@@ -72,6 +71,7 @@
     <Compile Include="Assets\Scripts\DestroyByTime.cs" />
     <Compile Include="Assets\Scripts\DestroyOutScreen.cs" />
     <Compile Include="Assets\Scripts\Die.cs" />
+    <Compile Include="Assets\Scripts\EnemiesMovement.cs" />
     <Compile Include="Assets\Scripts\EnemyDie.cs" />
     <Compile Include="Assets\Scripts\EnemyShoot.cs" />
     <Compile Include="Assets\Scripts\LevelScript.cs" />
