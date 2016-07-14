@@ -69,6 +69,7 @@ public class Shoot : MonoBehaviour {
 
     public void shoot(Vector2 direction)
     {
+        GetComponent<AudioSource>().Play();
         GameObject NewBullet = (GameObject)Instantiate(BulletPrefab, transform.position, Quaternion.identity);
         NewBullet.GetComponent<Rigidbody2D>().rotation = Vector2.Angle(Vector2.right, direction);
         NewBullet.GetComponent<Rigidbody2D>().velocity = direction.normalized * velocity + GetComponent<AutoMovement>().Movement();

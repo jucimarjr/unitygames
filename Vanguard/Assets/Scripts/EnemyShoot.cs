@@ -26,6 +26,7 @@ public class EnemyShoot : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(time + Random.Range(-timeVariation, timeVariation));
+            GetComponent<AudioSource>().Play();
             GameObject NewBullet = (GameObject)Instantiate(Bullet, transform.position, Quaternion.identity);
             NewBullet.GetComponent<Rigidbody2D>().rotation = Vector2.Angle(Vector2.right, direction);
             NewBullet.GetComponent<Rigidbody2D>().velocity = direction.normalized * velocity;

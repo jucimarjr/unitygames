@@ -33,7 +33,7 @@ public class ControlMovement : MonoBehaviour {
             foreach (Touch touch in Input.touches)
             {
                 Vector3 pos = Camera.main.ScreenToViewportPoint(touch.position);
-                if (pos.y < 0.5f)
+                if (pos.y < 0.3f)
                 {
                     if (pos.x > 0.5f)
                     {

@@ -6,7 +6,7 @@ public class SpawnEnemies : MonoBehaviour {
     public List<GameObject> EnemiesPrefabs = new List<GameObject>();
     public int EnemiesPerLine;
     public int EnemiesColumn;
-    public float EnemiesDistance;
+    float EnemiesDistance;
     public float EnemiesColumnDistance;
     public float EnemyDelay;
 	// Use this for initialization

@@ -22,7 +22,7 @@ public class EnemieDie : MonoBehaviour
         if (collision.gameObject.CompareTag("BulletPlayer"))
         {
             GameObject.FindObjectOfType<Score>().AddScore();
-            GameObject NewExplosion = Instantiate(ExplosionPrefab, transform.position, Quaternion.identity) as GameObject;
+            Instantiate(ExplosionPrefab, transform.position, Quaternion.identity);
             Destroy(collision.gameObject);
             Destroy(gameObject);
         }else if (collision.gameObject.CompareTag("Player"))

@@ -25,7 +25,7 @@ public class Lifes : MonoBehaviour {
         if(lifes <= 0)
         {
             gameOver.SetActive(true);
-            GameObject.FindObjectOfType<GameOver>().Lose();
+            gameOver.GetComponent<GameOver>().Lose();
         }
     }
 }

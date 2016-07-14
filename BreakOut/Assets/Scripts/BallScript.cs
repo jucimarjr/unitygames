@@ -44,12 +44,14 @@ public class BallScript : MonoBehaviour
         }
         else if (collision.gameObject.CompareTag("Block"))
         {
+            GetComponent<AudioSource>().Play();
             score.UpdateScore(100);
             Destroy(collision.gameObject);
             if (GameObject.Find("Blocks").transform.childCount <= 1)
             {
+                life.gameOver.SetActive(true);
+                life.gameOver.GetComponent<GameOver>().Win();
                 Destroy(gameObject);
-                GameObject.FindObjectOfType<GameOver>().Win();
             }
         }
     }

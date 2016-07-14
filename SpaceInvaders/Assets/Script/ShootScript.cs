@@ -18,6 +18,7 @@ public class ShootScript : MonoBehaviour {
         {
             GameObject NewBullet = Instantiate(BulletPrefab, transform.position, transform.rotation) as GameObject;
             NewBullet.GetComponent<Rigidbody2D>().velocity = Vector2.up * BulletVelocity;
+            GetComponent<AudioSource>().Play();
             yield return new WaitForSeconds(ShootDelay);
         }
 
