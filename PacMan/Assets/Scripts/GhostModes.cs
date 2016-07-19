@@ -7,7 +7,8 @@ public enum Mode
     Scatter,
     Fright,
     Eyes,
-    ExitHouse
+    ExitHouse,
+    Waiting
 }
 
 public enum Ghost
@@ -23,9 +24,7 @@ public class GhostModes : MonoBehaviour
     public Mode mode;
     public Ghost ghost;
     FollowTarget followscript;
-
-
-
+    Frightened frightscript;
     GameObject pac;
 
     // Use this for initialization
@@ -33,54 +32,82 @@ public class GhostModes : MonoBehaviour
     {
         pac = GameObject.Find("PacMan");
         followscript = GetComponent<FollowTarget>();
+        frightscript = GetComponent<Frightened>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        /*
-        if (VerifyHouse())
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            mode = Mode.Chase;
+        }else if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            mode = Mode.Scatter;
+        }else if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            mode = Mode.Fright;
+        }else if (Input.GetKeyDown(KeyCode.Alpha5))
         {
             mode = Mode.ExitHouse;
-        }else
+        }
+
+        
+        if (VerifyHouse() && mode == Mode.ExitHouse)
         {
             mode = Mode.Scatter;
         }
-        */
+        
         switch (mode)
         {
             case Mode.Chase:
+                if (!followscript.enabled)
+                    followscript.enabled = true;
+                frightscript.enabled = false;
                 SetTarget();
                 break;
             case Mode.Scatter:
+                if (!followscript.enabled)
+                    followscript.enabled = true;
+                frightscript.enabled = false;
                 followscript.SetScatter();
                 break;
             case Mode.Fright:
-
+                followscript.enabled = false;
+                frightscript.enabled = true;
                 break;
             case Mode.Eyes:
-
+                frightscript.enabled = false;
+                if (!followscript.enabled)
+                    followscript.enabled = true;
+                followscript.ReturnHome();
                 break;
             case Mode.ExitHouse:
+                if (!followscript.enabled)
+                    followscript.enabled = true;
+                frightscript.enabled = false;
                 followscript.SetTarget(new Vector2(0, 4.5f));
+                break;
+            case Mode.Waiting:
+                followscript.enabled = false;
+                frightscript.enabled = false;
+                GetComponent<Rigidbody2D>().velocity = Vector2.zero;
                 break;
         }
     }
 
     bool VerifyHouse()
     {
-        Vector2[] directions = { Vector2.left, Vector2.up, Vector2.right, Vector2.down };
-        foreach(Vector2 d in directions)
-        {
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.up, 0.1f);
+        
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 0.1f);
             if (hit.collider != null)
             {
-                if (hit.collider.CompareTag("GhostHouse"))
+                if (hit.collider.CompareTag("HouseExit"))
                 {
                     return true;
                 }
             }
-        }
+        
         return false;
     }
 
@@ -122,21 +149,5 @@ public class GhostModes : MonoBehaviour
             mode = newMode;
         }
     }
-
-    public void OnTriggerEnter2D(Collider2D collision)
-    {
-        Debug.Log("Exit House");
-        if (collision.gameObject.CompareTag("GhostHouse"))
-        {
-            mode = Mode.ExitHouse;
-        }
-    }
-
-    public void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.gameObject.CompareTag("GhostHouse"))
-        {
-            mode = Mode.Scatter;
-        }
-    }
+   
 }

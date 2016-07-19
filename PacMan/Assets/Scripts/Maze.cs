@@ -50,7 +50,8 @@ public class Maze : MonoBehaviour {
                 {
                     tempObj = Instantiate(Wall, new Vector3(j + MapOffset.x, MapOffset.y - i, 0), Quaternion.identity) as GameObject;
                     tempObj.transform.parent = transform;
-                }else if(maze[i,j] == 4)
+                }
+                else if(maze[i,j] == 4)
                 {
                     tempObj = Instantiate(smallDot, new Vector3(j + MapOffset.x, MapOffset.y - i, 0), Quaternion.identity) as GameObject;
                     tempObj.transform.parent = transform;

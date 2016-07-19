@@ -13,11 +13,13 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.3.4f1</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <LangVersion Condition=" '$(VisualStudioVersion)' != '10.0' ">4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -63,14 +65,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\GhostModes.cs" />
+    <Compile Include="Assets\Scripts\BigDot.cs" />
+    <Compile Include="Assets\Scripts\CollidePacMan.cs" />
+    <Compile Include="Assets\Scripts\PacDie.cs" />
+    <Compile Include="Assets\Scripts\Dot.cs" />
     <Compile Include="Assets\Scripts\FollowTarget.cs" />
+    <Compile Include="Assets\Scripts\Frightened.cs" />
+    <Compile Include="Assets\Scripts\GhostModes.cs" />
     <Compile Include="Assets\Scripts\Maze.cs" />
-    <Compile Include="Assets\Scripts\MoveThroughMaze.cs" />
+    <Compile Include="Assets\Scripts\MazeMovement.cs" />
     <Compile Include="Assets\Scripts\PacMovement.cs" />
     <Compile Include="Assets\Scripts\SceneScript.cs" />
     <Compile Include="Assets\Scripts\SmallDot.cs" />
-    <Compile Include="Assets\Scripts\TiledObject.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>

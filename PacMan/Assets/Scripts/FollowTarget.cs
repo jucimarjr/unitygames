@@ -14,7 +14,7 @@ public class FollowTarget : MazeMovement
     public bool CanChange = true;
 
     //public Direction nextDirection;
-    public float distance;
+    float distance;
     public float ChangeDistance;
 
     Animator anim;
@@ -30,6 +30,51 @@ public class FollowTarget : MazeMovement
         StartPoint = transform.position;
     }
 
+    void OnEnable()
+    {
+        if(anim != null)
+            SetAnim();
+    }
+
+    void OnDisable()
+    {
+        body.velocity = -body.velocity;
+    }
+
+    void SetAnim()
+    {
+        Mode mode =  GetComponent<GhostModes>().mode;
+        if(mode != Mode.Eyes)
+        {
+            switch (direction)
+            {
+                case Direction.Right:
+                    anim.SetTrigger("right");
+                    break;
+                case Direction.Left:
+                    anim.SetTrigger("left");
+                    break;
+                case Direction.Up:
+                    anim.SetTrigger("up");
+                    break;
+                case Direction.Down:
+                    anim.SetTrigger("down");
+                    break;
+            }
+        }        
+    }
+
+    void ChooseDirectionMove()
+    {
+        Direction newDirection = VerifyMinDistance(VerifyAvaliableDirections());
+        if (direction != newDirection)
+        {
+            CanChange = false;
+            direction = newDirection;
+            ChangeDirection(direction);
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -37,42 +82,33 @@ public class FollowTarget : MazeMovement
         distance = Vector2.Distance(transform.position, TilePosition.ToWorldPoint());
         if (Vector2.Distance(transform.position, TilePosition.ToWorldPoint()) < ChangeDistance && CanChange)
         {
-            Direction newDirection = VerifyMinDistance(VerifyAvaliableDirections());
-            if (direction != newDirection)
-            {
-                CanChange = false;
-                direction = newDirection;
-                ChangeDirection(direction);
-            }
+            ChooseDirectionMove();
         }
         if (distance > 0.4f)
         {
             CanChange = true;
         }
+        
         else
         if (!VerifyDirection(GetDirectionVector(direction), 0.5f))
         {
             body.velocity = Vector2.zero;
         }
+        
+        if(body.velocity == Vector2.zero)
+        {
+            Direction newDirection = VerifyMinDistance(VerifyAvaliableDirections());
+            Debug.Log(newDirection);
+            CanChange = false;
+            direction = newDirection;
+            ChangeDirection(direction);
+        }
     }
 
     void ChangeDirection(Direction direction)
     {
-        switch (direction)
-        {
-            case Direction.Right:
-                anim.SetTrigger("right");
-                break;
-            case Direction.Left:
-                anim.SetTrigger("left");
-                break;
-            case Direction.Up:
-                anim.SetTrigger("up");
-                break;
-            case Direction.Down:
-                anim.SetTrigger("down");
-                break;
-        }
+        
+        SetAnim();
         transform.position = TilePosition.ToWorldPoint();
         body.velocity = GetDirectionVector(direction) * velocity;
     }
@@ -92,7 +128,7 @@ public class FollowTarget : MazeMovement
                     newTile.x = TilePosition.x;
                     newTile.y = TilePosition.y;
                     newTile.x += 1;
-                    Debug.DrawLine(Target, newTile.ToWorldPoint());
+                    Debug.DrawLine(Target, newTile.ToWorldPoint(), LineColor);
                     dist = Vector2.Distance(Target, newTile.ToWorldPoint());
                     if (dist < MinDistance)
                     {
@@ -105,7 +141,7 @@ public class FollowTarget : MazeMovement
                     newTile.x = TilePosition.x;
                     newTile.y = TilePosition.y;
                     newTile.x -= 1;
-                    Debug.DrawLine(Target, newTile.ToWorldPoint());
+                    Debug.DrawLine(Target, newTile.ToWorldPoint(), LineColor);
                     dist = Vector2.Distance(Target, newTile.ToWorldPoint());
                     if (dist < MinDistance)
                     {
@@ -118,7 +154,7 @@ public class FollowTarget : MazeMovement
                     newTile.x = TilePosition.x;
                     newTile.y = TilePosition.y;
                     newTile.y += 1;
-                    Debug.DrawLine(Target, newTile.ToWorldPoint());
+                    Debug.DrawLine(Target, newTile.ToWorldPoint(), LineColor);
                     dist = Vector2.Distance(Target, newTile.ToWorldPoint());
                     if (dist < MinDistance)
                     {
@@ -131,7 +167,7 @@ public class FollowTarget : MazeMovement
                     newTile.x = TilePosition.x;
                     newTile.y = TilePosition.y;
                     newTile.y -= 1;
-                    Debug.DrawLine(Target, newTile.ToWorldPoint());
+                    Debug.DrawLine(Target, newTile.ToWorldPoint(), LineColor);
                     dist = Vector2.Distance(Target, newTile.ToWorldPoint());
                     if (dist < MinDistance)
                     {
@@ -144,51 +180,6 @@ public class FollowTarget : MazeMovement
         return chooseDirection;
     }
 
-    List<Direction> VerifyAvaliableDirections()
-    {
-        List<Direction> DirectionsAvaliable = new List<Direction>();
-        switch (direction)
-        {
-            case Direction.Up:
-                //Verificar direcoes disponiveis menos Up;
-                if (VerifyDirection(Vector2.right, 1f))
-                    DirectionsAvaliable.Add(Direction.Right);
-                if (VerifyDirection(Vector2.up, 1f))
-                    DirectionsAvaliable.Add(Direction.Up);
-                if (VerifyDirection(Vector2.left, 1f))
-                    DirectionsAvaliable.Add(Direction.Left);
-                break;
-            case Direction.Left:
-                //Verificar direcoes disponiveis menos Right;
-                if (VerifyDirection(Vector2.left, 1f))
-                    DirectionsAvaliable.Add(Direction.Left);
-                if (VerifyDirection(Vector2.down, 1f))
-                    DirectionsAvaliable.Add(Direction.Down);
-                if (VerifyDirection(Vector2.up, 1f))
-                    DirectionsAvaliable.Add(Direction.Up);
-                break;
-            case Direction.Down:
-                //Verificar direcoes disponiveis menos Down;
-                if (VerifyDirection(Vector2.right, 1f))
-                    DirectionsAvaliable.Add(Direction.Right);
-                if (VerifyDirection(Vector2.left, 1f))
-                    DirectionsAvaliable.Add(Direction.Left);
-                if (VerifyDirection(Vector2.down, 1f))
-                    DirectionsAvaliable.Add(Direction.Down);
-                break;
-            case Direction.Right:
-                //Verificar direcoes disponiveis menos Left;
-                if (VerifyDirection(Vector2.right, 1f))
-                    DirectionsAvaliable.Add(Direction.Right);
-                if (VerifyDirection(Vector2.down, 1f))
-                    DirectionsAvaliable.Add(Direction.Down);
-                if (VerifyDirection(Vector2.up, 1f))
-                    DirectionsAvaliable.Add(Direction.Up);
-                break;
-        }
-        return DirectionsAvaliable;
-    }
-
     public void SetTarget(Vector2 target)
     {
         Target = target;
@@ -197,6 +188,13 @@ public class FollowTarget : MazeMovement
     public void SetScatter()
     {
         Target = ScatterTarget;
+    }
+
+    public void ReturnHome()
+    {
+        anim.SetTrigger("eyes");
+        Target = StartPoint;
+        velocity = 10;
     }
 
     public void OnTriggerStay2D(Collider2D collision)

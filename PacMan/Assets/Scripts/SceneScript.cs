@@ -1,10 +1,13 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class SceneScript : MonoBehaviour {
     public int DotsEated;
     public int Score;
     public int PacLifes;
+    [Range(0,1)]
+    public float timeScale;
 
     public Mode mode;
     public GameObject pacman;
@@ -12,8 +15,11 @@ public class SceneScript : MonoBehaviour {
     public GameObject inky;
     public GameObject pinky;
     public GameObject clyde;
+
+    public bool isGameOver;
 	// Use this for initialization
 	void Start () {
+        isGameOver = false;
         DotsEated = 0;
         Score = 0;
         PacLifes = 3;
@@ -21,36 +27,46 @@ public class SceneScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        
+        Time.timeScale = timeScale;
+
+        if (isGameOver)
+        {
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            }
+        }
     }
 
     public void ChaseMode()
     {
-        blinky.GetComponent<FollowTarget>().SetTarget(pacman.transform.position);
-
-        Vector2 pinkyTarget = pacman.GetComponent<MazeMovement>().PositionWithOffset(4);
-        pinky.GetComponent<FollowTarget>().SetTarget(pinkyTarget);
-
-        Vector2 inkyOffset = pacman.GetComponent<MazeMovement>().PositionWithOffset(2);
-        Vector2 inkyTarget = (Vector2)blinky.transform.position + 2 * (inkyOffset - (Vector2)blinky.transform.position);
-        inky.GetComponent<FollowTarget>().SetTarget(inkyTarget);
-
-        float clydeDistance = Vector2.Distance(pacman.transform.position, clyde.transform.position);
-        if (clydeDistance > 8)
-        {
-            clyde.GetComponent<FollowTarget>().SetTarget(pacman.transform.position);
-        }
-        else
-        {
-            clyde.GetComponent<FollowTarget>().SetScatter();
-        }
+        blinky.GetComponent<GhostModes>().ChangeMode(Mode.Chase);
+        inky.GetComponent<GhostModes>().ChangeMode(Mode.Chase);
+        pinky.GetComponent<GhostModes>().ChangeMode(Mode.Chase);
+        clyde.GetComponent<GhostModes>().ChangeMode(Mode.Chase);
     }
 
     public void ScatterMode()
     {
-        blinky.GetComponent<FollowTarget>().SetScatter();
-        inky.GetComponent<FollowTarget>().SetScatter();
-        pinky.GetComponent<FollowTarget>().SetScatter();
-        clyde.GetComponent<FollowTarget>().SetScatter();
+        blinky.GetComponent<GhostModes>().ChangeMode(Mode.Scatter);
+        inky.GetComponent<GhostModes>().ChangeMode(Mode.Scatter);
+        pinky.GetComponent<GhostModes>().ChangeMode(Mode.Scatter);
+        clyde.GetComponent<GhostModes>().ChangeMode(Mode.Scatter);
+    }
+
+    public void StopGhosts()
+    {
+        blinky.GetComponent<GhostModes>().ChangeMode(Mode.Waiting);
+        inky.GetComponent<GhostModes>().ChangeMode(Mode.Waiting);
+        pinky.GetComponent<GhostModes>().ChangeMode(Mode.Waiting);
+        clyde.GetComponent<GhostModes>().ChangeMode(Mode.Waiting);
+    }
+
+    public void FrightMode()
+    {
+        blinky.GetComponent<GhostModes>().ChangeMode(Mode.Fright);
+        inky.GetComponent<GhostModes>().ChangeMode(Mode.Fright);
+        pinky.GetComponent<GhostModes>().ChangeMode(Mode.Fright);
+        clyde.GetComponent<GhostModes>().ChangeMode(Mode.Fright);
     }
 }

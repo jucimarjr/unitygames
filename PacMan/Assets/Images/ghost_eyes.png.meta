@@ -1,9 +1,17 @@
 fileFormatVersion: 2
 guid: 748049c2f6b840440adc993f84a9ecc9
-timeCreated: 1468417262
+timeCreated: 1468859298
 licenseType: Free
 TextureImporter:
-  fileIDToRecycleName: {}
+  fileIDToRecycleName:
+    21300000: ghost_eyes_0
+    21300002: ghost_eyes_1
+    21300004: ghost_eyes_2
+    21300006: ghost_eyes_3
+    21300008: ghost_eyes_4
+    21300010: ghost_eyes_5
+    21300012: ghost_eyes_6
+    21300014: ghost_eyes_7
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -44,12 +52,100 @@ TextureImporter:
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spritePixelsToUnits: 8
+  spritePixelsToUnits: 16
   alphaIsTransparency: 1
   textureType: 8
   buildTargetSettings: []
   spriteSheet:
-    sprites: []
+    sprites:
+    - name: ghost_eyes_0
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 0
+        width: 23.5
+        height: 22
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: ghost_eyes_1
+      rect:
+        serializedVersion: 2
+        x: 25
+        y: 0
+        width: 23.5
+        height: 22
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: ghost_eyes_2
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 0
+        width: 23.5
+        height: 22
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: ghost_eyes_3
+      rect:
+        serializedVersion: 2
+        x: 71
+        y: 0
+        width: 23.5
+        height: 22
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: ghost_eyes_4
+      rect:
+        serializedVersion: 2
+        x: 94
+        y: 0
+        width: 23.5
+        height: 22
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: ghost_eyes_5
+      rect:
+        serializedVersion: 2
+        x: 117
+        y: 0
+        width: 23.5
+        height: 22
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: ghost_eyes_6
+      rect:
+        serializedVersion: 2
+        x: 142
+        y: 0
+        width: 24
+        height: 22
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: ghost_eyes_7
+      rect:
+        serializedVersion: 2
+        x: 166
+        y: 0
+        width: 24
+        height: 22
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
     outline: []
   spritePackingTag: 
   userData: 
