@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 
 public class MazeMovement : MonoBehaviour {
+    public bool CanEnterHouse = false;
     public TilePosition TilePosition;
     public Color LineColor;
     public enum Direction
@@ -20,6 +21,39 @@ public class MazeMovement : MonoBehaviour {
 	protected void Update () {
         TilePosition.x = Mathf.FloorToInt(transform.position.x);
         TilePosition.y = Mathf.FloorToInt(transform.position.y);
+
+        if (!VerifyWallTile())
+        {
+            Direction temp = direction;
+            direction = VerifyAvaliableTiles();
+
+            Vector2 pos = PositionWithOffset(1);
+            transform.position = pos;
+            direction = temp;
+        }
+    }
+
+    Direction VerifyAvaliableTiles()
+    {
+        Direction[] directions = { Direction.Left, Direction.Right, Direction.Up, Direction.Down };
+        Direction avaliable = direction;
+        foreach (Direction d in directions)
+        {
+            Vector2 directvect = GetDirectionVector(d);
+            Debug.DrawLine((transform.position + (Vector3)directvect * 0.75f), (transform.position + (Vector3)directvect * 0.85f), LineColor);
+            RaycastHit2D[] hits = Physics2D.RaycastAll((transform.position + (Vector3)directvect * 0.75f), directvect, 0.2f);
+            foreach (RaycastHit2D hit in hits)
+            {
+                if(hit.collider == null)
+                {
+                    avaliable = d;
+                }else if (!hit.collider.CompareTag("Wall"))
+                {
+                    avaliable = d;
+                }
+            }
+        }
+        return avaliable;
     }
 
     public bool VerifyWallTile()
@@ -34,77 +68,6 @@ public class MazeMovement : MonoBehaviour {
         }
         return true;
     }
-
-    public void FitToTile(Vector2 tile)
-    {
-        if (!VerifyWallTile())
-        {
-            Debug.Log("Wall");
-            float difx = transform.position.x - (tile.x + 0.5f);
-            float dify = transform.position.y - (tile.y + 0.5f);
-            if(difx >= 0)
-            {
-                if(dify >= 0)
-                {
-                    if(difx > dify)
-                    {
-                        //To up
-                        direction = Direction.Up;
-                    }else
-                    {
-                        //To right
-                        direction = Direction.Right;
-                    }
-                }else
-                {
-                    if(difx > -dify)
-                    {
-                        //To right
-                        direction = Direction.Right;
-                    }
-                    else
-                    {
-                        //To down
-                        direction = Direction.Down;
-                    }
-                }
-            }else
-            {
-                if (dify >= 0)
-                {
-                    if (-difx > dify)
-                    {
-                        //To up
-                        direction = Direction.Up;
-                    }
-                    else
-                    {
-                        //To left
-                        direction = Direction.Left;
-                    }
-                }
-                else
-                {
-                    if (-difx > -dify)
-                    {
-                        //To left
-                        direction = Direction.Left;
-                    }
-                    else
-                    {
-                        //To down
-                        direction = Direction.Down;
-                    }
-                }
-            }
-            transform.position = PositionWithOffset(1);
-        }
-        else
-        {
-            transform.position = TilePosition.ToWorldPoint();
-        }
-    }
-
 
     public bool VerifyDirection(Vector2 direction, float distance)
     {
@@ -122,7 +85,7 @@ public class MazeMovement : MonoBehaviour {
                 {
                     transform.position = Vector3.Reflect(transform.position, Vector3.right);
                 }
-                else if (hit.collider.CompareTag("HouseDoor"))
+                else if (hit.collider.CompareTag("HouseDoor") && !CanEnterHouse)
                 {
                     if (direction == Vector2.down)
                     {

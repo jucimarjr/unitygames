@@ -25,37 +25,28 @@ public class GhostModes : MonoBehaviour
     public Ghost ghost;
     FollowTarget followscript;
     Frightened frightscript;
+    SceneScript scenescript;
     GameObject pac;
 
     // Use this for initialization
     void Start()
     {
         pac = GameObject.Find("PacMan");
+        scenescript = GameObject.FindObjectOfType<SceneScript>();
         followscript = GetComponent<FollowTarget>();
         frightscript = GetComponent<Frightened>();
     }
 
     // Update is called once per frame
     void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            mode = Mode.Chase;
-        }else if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            mode = Mode.Scatter;
-        }else if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            mode = Mode.Fright;
-        }else if (Input.GetKeyDown(KeyCode.Alpha5))
-        {
-            mode = Mode.ExitHouse;
-        }
-
-        
+    {        
         if (VerifyHouse() && mode == Mode.ExitHouse)
         {
             mode = Mode.Scatter;
+        }
+        if(mode == Mode.Eyes)
+        {
+            VerifyOnHouse();
         }
         
         switch (mode)
@@ -85,6 +76,7 @@ public class GhostModes : MonoBehaviour
             case Mode.ExitHouse:
                 if (!followscript.enabled)
                     followscript.enabled = true;
+                followscript.CanEnterHouse = false;
                 frightscript.enabled = false;
                 followscript.SetTarget(new Vector2(0, 4.5f));
                 break;
@@ -97,8 +89,7 @@ public class GhostModes : MonoBehaviour
     }
 
     bool VerifyHouse()
-    {
-        
+    {        
             RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 0.1f);
             if (hit.collider != null)
             {
@@ -109,6 +100,25 @@ public class GhostModes : MonoBehaviour
             }
         
         return false;
+    }
+
+    public void Reset()
+    {
+        transform.position = followscript.StartPoint;
+        mode = Mode.Waiting;
+    }
+
+    void VerifyOnHouse()
+    {
+        Vector3 target = followscript.Target;
+        float dist = Vector2.Distance(target, transform.position);
+        if(dist < 0.5f)
+        {
+            mode = Mode.ExitHouse;
+            followscript.returning = false;
+            followscript.velocity = 5;
+            GetComponent<Animator>().SetTrigger("left");
+        }
     }
 
     void SetTarget()
@@ -146,7 +156,38 @@ public class GhostModes : MonoBehaviour
     {
         if (mode != newMode)
         {
-            mode = newMode;
+            if(mode == Mode.Waiting && newMode == Mode.ExitHouse)
+            {
+                mode = newMode;
+            }else if(mode == Mode.ExitHouse && newMode == Mode.Scatter)
+            {
+                mode = newMode;
+            }else if(mode == Mode.Scatter)
+            {
+                if(newMode == Mode.Chase || newMode == Mode.Fright)
+                {
+                    mode = newMode;
+                }
+            }else if(mode == Mode.Chase)
+            {
+                if(newMode == Mode.Scatter || newMode == Mode.Fright)
+                {
+                    mode = newMode;
+                }
+            }else if(mode == Mode.Fright)
+            {
+                if(newMode == Mode.Chase || newMode == Mode.Scatter || newMode == Mode.Eyes)
+                {
+                    mode = newMode;
+                }
+            }else if(mode == Mode.Eyes && newMode == Mode.Waiting)
+            {
+                mode = newMode;
+            }
+            if (newMode == Mode.Waiting)
+            {
+                mode = newMode;
+            }
         }
     }
    

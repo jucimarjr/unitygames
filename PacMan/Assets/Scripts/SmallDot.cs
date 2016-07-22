@@ -3,12 +3,12 @@ using UnityEngine.UI;
 using System.Collections;
 
 public class SmallDot : Dot {
-    Text txt;
+    public Text txt;
     public Vector2 tilepos;
 	// Use this for initialization
 	void Start () {
         base.Start();
-        txt = GameObject.Find("DotsEated").GetComponent<Text>();
+        //txt = GameObject.Find("DotsEated").GetComponent<Text>();
         txt.text = "Dots Eated: " + sceneScript.DotsEated;
     }
 	
@@ -21,7 +21,9 @@ public class SmallDot : Dot {
     public override void OnEated()
     {
         sceneScript.DotsEated++;
+        sceneScript.GhostPacCounterAdd();
         txt.text = "Dots Eated: " + sceneScript.DotsEated;
+        sceneScript.AddScore(10);
         Destroy(gameObject);
     }
 }

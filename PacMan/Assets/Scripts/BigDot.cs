@@ -14,7 +14,8 @@ public class BigDot : Dot {
 
     public override void OnEated()
     {
-        sceneScript.FrightMode();
+        sceneScript.AddScore(50);
+        sceneScript.SetGhostMode(Mode.Fright);
         Destroy(gameObject);
     }
 }

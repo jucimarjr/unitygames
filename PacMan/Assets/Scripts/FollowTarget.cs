@@ -32,7 +32,10 @@ public class FollowTarget : MazeMovement
 
     void OnEnable()
     {
-        if(anim != null)
+        transform.position = new Vector3(Mathf.Floor(transform.position.x) + 0.5f, Mathf.Floor(transform.position.y) + 0.5f);
+        if(body != null)
+            RevertDirection();
+        if (anim != null)
             SetAnim();
     }
 
@@ -98,7 +101,6 @@ public class FollowTarget : MazeMovement
         if(body.velocity == Vector2.zero)
         {
             Direction newDirection = VerifyMinDistance(VerifyAvaliableDirections());
-            Debug.Log(newDirection);
             CanChange = false;
             direction = newDirection;
             ChangeDirection(direction);
@@ -190,11 +192,39 @@ public class FollowTarget : MazeMovement
         Target = ScatterTarget;
     }
 
+    public void RevertDirection()
+    {
+        switch (direction)
+        {
+            case Direction.Up:
+                direction = Direction.Down;
+                break;
+            case Direction.Down:
+                direction = Direction.Up;
+                break;
+            case Direction.Left:
+                direction = Direction.Right;
+                break;
+            case Direction.Right:
+                direction = Direction.Left;
+                break;
+        }
+        body.velocity = GetDirectionVector(direction) * velocity;
+    }
+
+
+    public bool returning = false;
     public void ReturnHome()
     {
-        anim.SetTrigger("eyes");
-        Target = StartPoint;
-        velocity = 10;
+        if (!returning)
+        {
+            RevertDirection();
+            returning = true;
+            CanEnterHouse = true;
+            anim.SetTrigger("eyes");
+            Target = StartPoint;
+            velocity = 10;
+        }
     }
 
     public void OnTriggerStay2D(Collider2D collision)

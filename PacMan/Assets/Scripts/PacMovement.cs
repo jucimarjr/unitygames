@@ -4,7 +4,7 @@ using System.Collections;
 
 public class PacMovement : MazeMovement
 {
-    
+    public Vector2 StartPoint;
 
     public float velocity;
 
@@ -20,6 +20,7 @@ public class PacMovement : MazeMovement
     void Start()
     {
         base.Start();
+        StartPoint = transform.position;
         body = GetComponent<Rigidbody2D>();
         body.velocity = velocity * GetDirectionVector(direction);
     }

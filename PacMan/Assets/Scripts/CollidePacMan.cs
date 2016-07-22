@@ -19,12 +19,12 @@ public class CollidePacMan : MonoBehaviour {
         if (TilePosition.ToTilePoint(transform.position).x == TilePosition.ToTilePoint(pactransform.position).x &&
             TilePosition.ToTilePoint(transform.position).y == TilePosition.ToTilePoint(pactransform.position).y)
         {
-            Debug.Log(mode.mode);
             if(mode.mode == Mode.Fright)
             {
-                mode.mode = Mode.Eyes;
+                mode.ChangeMode(Mode.Eyes);
 
-                Debug.Log("Return Home");
+                scenescript.GhostMult *= 2;
+                scenescript.AddScore(scenescript.GhostMult); 
             }
             else if(mode.mode == Mode.Eyes || mode.mode == Mode.Waiting)
             {
@@ -37,20 +37,14 @@ public class CollidePacMan : MonoBehaviour {
         }
     }
 
-    void EatGhost()
-    {
-        mode.mode = Mode.Eyes;
-        
-    }
-
     void KillPacMan()
     {
-        Debug.Log("Kill");
+        if (pac.GetComponent<PacDie>().Alive)
+        {
+            pac.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+            pac.GetComponent<PacDie>().Die();
 
-        pac.GetComponent<PacDie>().Die();
-
-        scenescript.StopGhosts();
-
-        scenescript.isGameOver = true;
+            scenescript.ReduceLife();
+        }
     }
 }

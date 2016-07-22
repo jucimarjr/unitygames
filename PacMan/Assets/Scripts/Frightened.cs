@@ -27,8 +27,11 @@ public class Frightened : MonoBehaviour
         anim = GetComponent<Animator>();
         lastMode = GetComponent<GhostModes>().mode;
         anim.SetTrigger("fright");
+        if(movement == null)
+            movement = GetComponent<MazeMovement>();
         direction = movement.GetDirectionVector(movement.direction);
-        
+        transform.position = new Vector3(Mathf.Floor(transform.position.x) + 0.5f, Mathf.Floor(transform.position.y) + 0.5f);
+        GetComponent<FollowTarget>().RevertDirection();
     }
 
     void OnDisable()

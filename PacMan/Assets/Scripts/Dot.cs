@@ -2,12 +2,12 @@
 using System.Collections;
 
 public class Dot : MonoBehaviour {
-    protected GameObject pac;
-    protected SceneScript sceneScript;
+    public GameObject pac;
+    public SceneScript sceneScript;
     // Use this for initialization
     protected void Start () {
-        sceneScript = GameObject.FindObjectOfType<SceneScript>();
-        pac = GameObject.Find("PacMan");
+        //sceneScript = GameObject.FindObjectOfType<SceneScript>();
+        //pac = GameObject.Find("PacMan");
     }
 	
 	// Update is called once per frame
