@@ -24,6 +24,7 @@ public class SmallDot : Dot {
         sceneScript.GhostPacCounterAdd();
         txt.text = "Dots Eated: " + sceneScript.DotsEated;
         sceneScript.AddScore(10);
+        sceneScript.PlaySound("eatingdot", true);
         Destroy(gameObject);
     }
 }

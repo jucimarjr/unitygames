@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 public class MazeMovement : MonoBehaviour {
@@ -29,7 +29,7 @@ public class MazeMovement : MonoBehaviour {
 
             Vector2 pos = PositionWithOffset(1);
             transform.position = pos;
-            direction = temp;
+            //direction = temp;
         }
     }
 

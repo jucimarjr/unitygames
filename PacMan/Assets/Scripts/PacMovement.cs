@@ -25,6 +25,16 @@ public class PacMovement : MazeMovement
         body.velocity = velocity * GetDirectionVector(direction);
     }
 
+    void OnEnable()
+    {
+        direction = Direction.Right;
+        if (body != null)
+        {
+            body.velocity = velocity * GetDirectionVector(direction);
+            body.rotation = 0;
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {

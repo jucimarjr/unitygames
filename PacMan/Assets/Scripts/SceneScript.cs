@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using System.Collections.Generic;
 
 public class SceneScript : MonoBehaviour {
     public int DotsEated;
@@ -34,6 +35,8 @@ public class SceneScript : MonoBehaviour {
     public float FrightTime;
 
     public bool isGameOver;
+
+    public Dictionary<string, AudioSource> Sounds = new Dictionary<string, AudioSource>();
 	// Use this for initialization
 	void Start () {
         ActiveCounter = Ghost.Pinky;
@@ -46,12 +49,50 @@ public class SceneScript : MonoBehaviour {
         AddScore(0);
         LifeText.text = "Lifes: " + PacLifes;
         blinky.ChangeMode(Mode.ExitHouse);
-
+        LoadSounds();
         ActiveMode = Mode.Scatter;
         ScatterTime = Time.time + 7;
         ChaseTime = Time.time + 30;
         FrightTime = Time.time + 6;
 
+    }
+
+    void LoadSounds()
+    {
+        foreach(AudioSource audio in GetComponents<AudioSource>())
+        {
+            Sounds.Add(audio.clip.name, audio);
+        }
+    }
+
+    public void PlaySound(string name)
+    {
+        Sounds[name].Play();
+    }
+
+    public void StopLooped(string name)
+    {
+        if(Sounds[name].loop == true)
+        {
+            Sounds[name].loop = false;
+        }
+    }
+
+    void PlayLooped(string name)
+    {
+        Sounds[name].loop = true;
+        Sounds[name].Play();
+    }
+
+    public void PlaySound(string name, bool replay)
+    {
+        if(replay == true)
+        {
+            if (!Sounds[name].isPlaying)
+            {
+                Sounds[name].Play();
+            }
+        }
     }
 
     public void AddScore(int add)
@@ -62,6 +103,8 @@ public class SceneScript : MonoBehaviour {
 
     public void ReduceLife()
     {
+        StopLooped("walking");
+        PlaySound("pacdie");
         GameOverText.text = "PRESS R TO RESPAWN";
         SetGhostMode(Mode.Waiting);
         PacLifes--;
@@ -134,6 +177,8 @@ public class SceneScript : MonoBehaviour {
         isGameOver = true;
         PacLifes = 0;
         GameOverText.text = "YOU WIN, PRESS R TO RESTART";
+        PlaySound("pacwin");
+        StopLooped("walking");
         SetGhostMode(Mode.Waiting);
         pacman.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
         pacman.GetComponent<PacMovement>().enabled = false;
@@ -234,6 +279,8 @@ public class SceneScript : MonoBehaviour {
         GameOverText.text = "";
         pacman.GetComponent<PacDie>().Respawm();
         SetGhostMode(Mode.ExitHouse);
+        PlaySound("paclive");
+        PlayLooped("walking");
     }
 
     public void SetGhostMode(Mode mode)
