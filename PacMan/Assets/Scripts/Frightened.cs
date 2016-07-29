@@ -6,9 +6,7 @@ public class Frightened : MonoBehaviour
 {
     Rigidbody2D body;
     Animator anim;
-    Mode lastMode;
     Vector2 direction;
-    bool eated;
     MazeMovement movement;
     public bool CanChange;
     public float distance;
@@ -25,26 +23,12 @@ public class Frightened : MonoBehaviour
     void OnEnable()
     {
         anim = GetComponent<Animator>();
-        lastMode = GetComponent<GhostModes>().mode;
         anim.SetTrigger("fright");
         if(movement == null)
             movement = GetComponent<MazeMovement>();
         direction = movement.GetDirectionVector(movement.direction);
         transform.position = new Vector3(Mathf.Floor(transform.position.x) + 0.5f, Mathf.Floor(transform.position.y) + 0.5f);
         GetComponent<FollowTarget>().RevertDirection();
-    }
-
-    void OnDisable()
-    {
-        if (eated)
-        {
-            GetComponent<GhostModes>().ChangeMode(Mode.Eyes);
-        }
-        else
-        {
-            body.velocity = -body.velocity;
-            //GetComponent<GhostModes>().ChangeMode(lastMode);
-        }
     }
 
     // Update is called once per frame
@@ -54,14 +38,13 @@ public class Frightened : MonoBehaviour
         distance = Vector2.Distance(transform.position, tilePosition);
         if (distance < ChangeDistance && CanChange)
         {
-            Vector2 newDirection = SelectRandomDirection();
+            direction = SelectRandomDirection();
             CanChange = false;
-            direction = newDirection;
             //movement.FitToTile();
             transform.position = tilePosition;
             body.velocity = direction * velocity;
             
-            if (!movement.VerifyDirection(newDirection, 0.5f))
+            if (!movement.VerifyDirection(direction, 0.5f))
             {
                 CanChange = true;
             }
@@ -70,12 +53,14 @@ public class Frightened : MonoBehaviour
         {
             CanChange = true;
         }
+        /*
         if(!movement.VerifyDirection(direction, 0.5f))
         {
             body.velocity = direction * -velocity;
             transform.position = tilePosition;
             CanChange = true;
         }
+        */
         if(body.velocity == Vector2.zero)
         {
             Vector2 newDirection = SelectRandomDirection();

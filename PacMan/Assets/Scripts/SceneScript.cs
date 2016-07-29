@@ -13,7 +13,7 @@ public class SceneScript : MonoBehaviour {
 
     public int InkyCount, PinkyCount, ClydeCount, GlobalCount;
     bool ActiveGlobalCount;
-    float lastDotTile;
+    float LastDotEated;
 
     public Ghost ActiveCounter;
 
@@ -65,11 +65,6 @@ public class SceneScript : MonoBehaviour {
         }
     }
 
-    public void PlaySound(string name)
-    {
-        Sounds[name].Play();
-    }
-
     public void StopLooped(string name)
     {
         if(Sounds[name].loop == true)
@@ -84,7 +79,7 @@ public class SceneScript : MonoBehaviour {
         Sounds[name].Play();
     }
 
-    public void PlaySound(string name, bool replay)
+    public void PlaySound(string name, bool replay = true)
     {
         if(replay == true)
         {
@@ -114,7 +109,6 @@ public class SceneScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         Time.timeScale = timeScale;
-
         if (isGameOver)
         {
             if (Input.GetKeyDown(KeyCode.R))
@@ -127,8 +121,6 @@ public class SceneScript : MonoBehaviour {
         }
         else
         {
-
-
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
                 SetGhostMode(Mode.Chase);
@@ -144,6 +136,12 @@ public class SceneScript : MonoBehaviour {
             else if (Input.GetKeyDown(KeyCode.Alpha5))
             {
                 SetGhostMode(Mode.ExitHouse);
+            }else if (Input.GetKeyDown(KeyCode.D))
+            {
+                blinky.GetComponent<FollowTarget>().ChangeDrawLine();
+                inky.GetComponent<FollowTarget>().ChangeDrawLine();
+                pinky.GetComponent<FollowTarget>().ChangeDrawLine();
+                clyde.GetComponent<FollowTarget>().ChangeDrawLine();
             }
 
             VerifyGhostExit();
@@ -160,6 +158,7 @@ public class SceneScript : MonoBehaviour {
             }
             else if (ActiveMode == Mode.Fright && Time.time > FrightTime)
             {
+                GhostMult = 100;
                 SetGhostMode(Mode.Scatter);
                 ScatterTime = Time.time + 7;
             }
@@ -176,7 +175,7 @@ public class SceneScript : MonoBehaviour {
     {
         isGameOver = true;
         PacLifes = 0;
-        GameOverText.text = "YOU WIN, PRESS R TO RESTART";
+        GameOverText.text = "YOU WIN\nPRESS R TO RESTART";
         PlaySound("pacwin");
         StopLooped("walking");
         SetGhostMode(Mode.Waiting);
@@ -186,7 +185,7 @@ public class SceneScript : MonoBehaviour {
 
     public void GhostPacCounterAdd()
     {
-        lastDotTile = Time.time;
+        LastDotEated = Time.time;
         if (!ActiveGlobalCount)
         {
             switch (ActiveCounter)
@@ -246,9 +245,9 @@ public class SceneScript : MonoBehaviour {
             }
         }
 
-        if(lastDotTile + 4 < Time.time)
+        if(LastDotEated + 4 < Time.time)
         {
-            lastDotTile = Time.time;
+            LastDotEated = Time.time;
             switch (ActiveCounter)
             {
                 case Ghost.Pinky:
@@ -269,12 +268,17 @@ public class SceneScript : MonoBehaviour {
 
     void RestartLevel()
     {
+        GhostMult = 100;
         blinky.Reset();
         inky.Reset();
         pinky.Reset();
         clyde.Reset();
         ActiveGlobalCount = true;
         isGameOver = false;
+        ActiveMode = Mode.Scatter;
+        ScatterTime = Time.time + 7;
+        ChaseTime = Time.time + 30;
+        FrightTime = Time.time + 6;
         LifeText.text = "Lifes: " + PacLifes;
         GameOverText.text = "";
         pacman.GetComponent<PacDie>().Respawm();
@@ -289,7 +293,7 @@ public class SceneScript : MonoBehaviour {
         {
             FrightTime = Time.time + 6;
         }
-        if(mode != Mode.Waiting && mode != Mode.ExitHouse)
+        if(!(mode == Mode.Waiting || mode == Mode.ExitHouse))
             ActiveMode = mode;
         blinky.ChangeMode(mode);
         inky.ChangeMode(mode);

@@ -25,14 +25,12 @@ public class GhostModes : MonoBehaviour
     public Ghost ghost;
     FollowTarget followscript;
     Frightened frightscript;
-    SceneScript scenescript;
     GameObject pac;
 
     // Use this for initialization
     void Start()
     {
         pac = GameObject.Find("PacMan");
-        scenescript = GameObject.FindObjectOfType<SceneScript>();
         followscript = GetComponent<FollowTarget>();
         frightscript = GetComponent<Frightened>();
     }
@@ -189,6 +187,5 @@ public class GhostModes : MonoBehaviour
                 mode = newMode;
             }
         }
-    }
-   
+    }   
 }

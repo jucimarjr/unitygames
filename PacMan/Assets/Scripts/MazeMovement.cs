@@ -24,12 +24,9 @@ public class MazeMovement : MonoBehaviour {
 
         if (!VerifyWallTile())
         {
-            Direction temp = direction;
             direction = VerifyAvaliableTiles();
-
             Vector2 pos = PositionWithOffset(1);
             transform.position = pos;
-            //direction = temp;
         }
     }
 

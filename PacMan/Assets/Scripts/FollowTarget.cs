@@ -11,6 +11,9 @@ public class FollowTarget : MazeMovement
     public float velocity;
     Rigidbody2D body;
 
+    public GameObject TargetLine;
+    public bool DrawTargetLine;
+
     public bool CanChange = true;
 
     //public Direction nextDirection;
@@ -78,10 +81,22 @@ public class FollowTarget : MazeMovement
         }
     }
 
+    public void ChangeDrawLine()
+    {
+        DrawTargetLine = !DrawTargetLine;
+        TargetLine.SetActive(DrawTargetLine);
+    }
+
     // Update is called once per frame
     void Update()
     {
         base.Update();
+
+        if (DrawTargetLine)
+        {
+            DrawLineTarget();
+        }
+
         distance = Vector2.Distance(transform.position, TilePosition.ToWorldPoint());
         if (Vector2.Distance(transform.position, TilePosition.ToWorldPoint()) < ChangeDistance && CanChange)
         {
@@ -113,6 +128,15 @@ public class FollowTarget : MazeMovement
         SetAnim();
         transform.position = TilePosition.ToWorldPoint();
         body.velocity = GetDirectionVector(direction) * velocity;
+    }
+
+    void DrawLineTarget()
+    {
+        Vector3 dir = Target - (Vector2)transform.position;
+        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        TargetLine.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+        float dist = 1.65f * Vector3.Distance(Target, (Vector2)transform.position);
+        TargetLine.transform.localScale = new Vector3(dist, 0.1f, 0);
     }
 
     Direction VerifyMinDistance(List<Direction> AvaliableDirections)

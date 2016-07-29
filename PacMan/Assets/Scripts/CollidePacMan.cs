@@ -22,16 +22,11 @@ public class CollidePacMan : MonoBehaviour {
             if(mode.mode == Mode.Fright)
             {
                 mode.ChangeMode(Mode.Eyes);
-
                 scenescript.GhostMult *= 2;
                 scenescript.AddScore(scenescript.GhostMult); 
             }
-            else if(mode.mode == Mode.Eyes || mode.mode == Mode.Waiting)
+            else if(mode.mode == Mode.Chase || mode.mode == Mode.Scatter)
             {
-                //Nada acontece
-            }else
-            {
-                //Fantasma mata pacman
                 KillPacMan();
             }
         }
@@ -43,7 +38,6 @@ public class CollidePacMan : MonoBehaviour {
         {
             pac.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
             pac.GetComponent<PacDie>().Die();
-
             scenescript.ReduceLife();
         }
     }

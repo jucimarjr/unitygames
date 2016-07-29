@@ -8,7 +8,6 @@ public class SmallDot : Dot {
 	// Use this for initialization
 	void Start () {
         base.Start();
-        //txt = GameObject.Find("DotsEated").GetComponent<Text>();
         txt.text = "Dots Eated: " + sceneScript.DotsEated;
     }
 	
