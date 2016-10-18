@@ -41,8 +41,8 @@ public class Maze : MonoBehaviour {
     public GameObject Wall, smallDot, bigDot;
     GameObject tempObj;
     // Use this for initialization
-	void Start () {        
-	    
+	void Start () {
+        CreateMaze();
 	}
 
     public void CreateMaze()
@@ -67,26 +67,6 @@ public class Maze : MonoBehaviour {
                     tempObj.transform.parent = transform;
                 }
             }
-        }
-    }
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
-}
-
-[CustomEditor(typeof(Maze))]
-public class ObjectBuilderEditor : Editor
-{
-    public override void OnInspectorGUI()
-    {
-        DrawDefaultInspector();
-
-        Maze myScript = (Maze)target;
-        if (GUILayout.Button("Create Maze"))
-        {
-            myScript.CreateMaze();
         }
     }
 }

@@ -79,7 +79,8 @@ public class PacMovement : MazeMovement
                     if (dist < CornerDistance)
                     {
                         direction = newDirection;
-                        transform.position = new Vector2(TilePosition.x + 0.5f, transform.position.y + GetDirectionVector(direction).y * Mathf.Abs(dist));
+                        transform.position = new Vector2(TilePosition.x + 0.5f, 
+                            transform.position.y + GetDirectionVector(direction).y * Mathf.Abs(dist));
                         body.velocity = velocity * GetDirectionVector(direction);
                     }
                 }
@@ -90,7 +91,8 @@ public class PacMovement : MazeMovement
                     if (dist < CornerDistance)
                     {
                         direction = newDirection;
-                        transform.position = new Vector2(TilePosition.x + 0.5f, transform.position.y + GetDirectionVector(direction).y * Mathf.Abs(dist));
+                        transform.position = new Vector2(TilePosition.x + 0.5f, 
+                            transform.position.y + GetDirectionVector(direction).y * Mathf.Abs(dist));
                         body.velocity = velocity * GetDirectionVector(direction);
                     }
                 }
@@ -101,7 +103,8 @@ public class PacMovement : MazeMovement
                     if (dist < CornerDistance)
                     {
                         direction = newDirection;
-                        transform.position = new Vector2(transform.position.x + GetDirectionVector(direction).x * Mathf.Abs(dist), TilePosition.y + 0.5f);
+                        transform.position = new Vector2(transform.position.x + GetDirectionVector(direction).x 
+                            * Mathf.Abs(dist), TilePosition.y + 0.5f);
                         body.velocity = velocity * GetDirectionVector(direction);
                     }
                 }
@@ -112,7 +115,8 @@ public class PacMovement : MazeMovement
                     if (dist < CornerDistance)
                     {
                         direction = newDirection;
-                        transform.position = new Vector2(transform.position.x + GetDirectionVector(direction).x * Mathf.Abs(dist), TilePosition.y + 0.5f);
+                        transform.position = new Vector2(transform.position.x + GetDirectionVector(direction).x 
+                            * Mathf.Abs(dist), TilePosition.y + 0.5f);
                         body.velocity = velocity * GetDirectionVector(direction);
                     }
                 }

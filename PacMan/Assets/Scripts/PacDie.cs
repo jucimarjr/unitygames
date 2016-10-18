@@ -2,6 +2,7 @@
 using System.Collections;
 
 public class PacDie : MonoBehaviour {
+    public SoundController Sounds;
     public bool Alive;
     Animator anim;
 	// Use this for initialization
@@ -9,14 +10,11 @@ public class PacDie : MonoBehaviour {
         Alive = true;
         anim = GetComponent<Animator>();
     }
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 
     public void Die()
     {
+        Sounds.PlaySound("pacdie");
+        Alive = false;
         anim.SetTrigger("die");
         GetComponent<PacMovement>().enabled = false;
         anim.speed = 1;

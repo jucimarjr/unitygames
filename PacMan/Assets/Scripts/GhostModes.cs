@@ -25,12 +25,11 @@ public class GhostModes : MonoBehaviour
     public Ghost ghost;
     FollowTarget followscript;
     Frightened frightscript;
-    GameObject pac;
+    public GameObject pac;
 
     // Use this for initialization
     void Start()
     {
-        pac = GameObject.Find("PacMan");
         followscript = GetComponent<FollowTarget>();
         frightscript = GetComponent<Frightened>();
     }
@@ -39,13 +38,11 @@ public class GhostModes : MonoBehaviour
     void Update()
     {        
         if (VerifyHouse() && mode == Mode.ExitHouse)
-        {
             mode = Mode.Scatter;
-        }
+        
         if(mode == Mode.Eyes)
-        {
             VerifyOnHouse();
-        }
+        
         
         switch (mode)
         {
@@ -92,9 +89,7 @@ public class GhostModes : MonoBehaviour
             if (hit.collider != null)
             {
                 if (hit.collider.CompareTag("HouseExit"))
-                {
                     return true;
-                }
             }
         
         return false;
@@ -129,7 +124,8 @@ public class GhostModes : MonoBehaviour
             case Ghost.Inky:
                 Vector2 inkyOffset = pac.GetComponent<MazeMovement>().PositionWithOffset(2);
                 GameObject blinky = GameObject.Find("blinky");
-                Vector2 inkyTarget = (Vector2)blinky.transform.position + 2 * (inkyOffset - (Vector2)blinky.transform.position);
+                Vector2 inkyTarget = (Vector2)blinky.transform.position + 2 * 
+                                     (inkyOffset - (Vector2)blinky.transform.position);
                 followscript.SetTarget(inkyTarget);
                 break;
             case Ghost.Pinky:
@@ -139,13 +135,9 @@ public class GhostModes : MonoBehaviour
             case Ghost.Clyde:
                 float clydeDistance = Vector2.Distance(pac.transform.position, transform.position);
                 if (clydeDistance > 8)
-                {
                     followscript.SetTarget(pac.transform.position);
-                }
                 else
-                {
                     followscript.SetScatter();
-                }
                 break;
         }
     }
@@ -155,37 +147,28 @@ public class GhostModes : MonoBehaviour
         if (mode != newMode)
         {
             if(mode == Mode.Waiting && newMode == Mode.ExitHouse)
-            {
                 mode = newMode;
-            }else if(mode == Mode.ExitHouse && newMode == Mode.Scatter)
-            {
+            else if(mode == Mode.ExitHouse && newMode == Mode.Scatter)
                 mode = newMode;
-            }else if(mode == Mode.Scatter)
+            else if(mode == Mode.Scatter)
             {
-                if(newMode == Mode.Chase || newMode == Mode.Fright)
-                {
+                if (newMode == Mode.Chase || newMode == Mode.Fright)
                     mode = newMode;
-                }
-            }else if(mode == Mode.Chase)
+            }                
+            else if(mode == Mode.Chase)
             {
-                if(newMode == Mode.Scatter || newMode == Mode.Fright)
-                {
+                if (newMode == Mode.Scatter || newMode == Mode.Fright)
                     mode = newMode;
-                }
-            }else if(mode == Mode.Fright)
+            }                
+            else if(mode == Mode.Fright)
             {
-                if(newMode == Mode.Chase || newMode == Mode.Scatter || newMode == Mode.Eyes)
-                {
+                if (newMode == Mode.Chase || newMode == Mode.Scatter || newMode == Mode.Eyes)
                     mode = newMode;
-                }
-            }else if(mode == Mode.Eyes && newMode == Mode.Waiting)
-            {
+            }                
+            else if(mode == Mode.Eyes && newMode == Mode.Waiting)
                 mode = newMode;
-            }
             if (newMode == Mode.Waiting)
-            {
                 mode = newMode;
-            }
         }
     }   
 }

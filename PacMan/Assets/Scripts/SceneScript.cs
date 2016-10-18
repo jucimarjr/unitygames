@@ -5,122 +5,51 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class SceneScript : MonoBehaviour {
-    public int DotsEated;
-    public int Score;
-    public int PacLifes;
     [Range(0,1)]
     public float timeScale;
 
-    public int InkyCount, PinkyCount, ClydeCount, GlobalCount;
+    int InkyCount, PinkyCount, ClydeCount, GlobalCount;
     bool ActiveGlobalCount;
     float LastDotEated;
-
-    public Ghost ActiveCounter;
-
-    public int GhostMult;
-
-    public Text ScoreText;
-    public Text LifeText;
-    public Text GameOverText;
+    Ghost ActiveCounter;    
 
     public Mode ActiveMode;
     public GameObject pacman;
-    public GhostModes blinky;
-    public GhostModes inky;
-    public GhostModes pinky;
-    public GhostModes clyde;
+    public GhostModes blinky, inky, pinky, clyde;
 
-    public float ScatterTime;
-    public float ChaseTime;
-    public float FrightTime;
+    float ScatterTime, ChaseTime, FrightTime;
 
-    public bool isGameOver;
+    public ScoreController Score;
+    public LifeController Life;
+    public SoundController Sound;
 
-    public Dictionary<string, AudioSource> Sounds = new Dictionary<string, AudioSource>();
 	// Use this for initialization
 	void Start () {
+        Sound.PlayLooped("walking");
         ActiveCounter = Ghost.Pinky;
         ActiveGlobalCount = false;
-        isGameOver = false;
-        DotsEated = 0;
-        Score = 0;
-        PacLifes = 3;
-        GhostMult = 100;
-        AddScore(0);
-        LifeText.text = "Lifes: " + PacLifes;
         blinky.ChangeMode(Mode.ExitHouse);
-        LoadSounds();
         ActiveMode = Mode.Scatter;
         ScatterTime = Time.time + 7;
         ChaseTime = Time.time + 30;
         FrightTime = Time.time + 6;
-
     }
-
-    void LoadSounds()
-    {
-        foreach(AudioSource audio in GetComponents<AudioSource>())
-        {
-            Sounds.Add(audio.clip.name, audio);
-        }
-    }
-
-    public void StopLooped(string name)
-    {
-        if(Sounds[name].loop == true)
-        {
-            Sounds[name].loop = false;
-        }
-    }
-
-    void PlayLooped(string name)
-    {
-        Sounds[name].loop = true;
-        Sounds[name].Play();
-    }
-
-    public void PlaySound(string name, bool replay = true)
-    {
-        if(replay == true)
-        {
-            if (!Sounds[name].isPlaying)
-            {
-                Sounds[name].Play();
-            }
-        }
-    }
-
-    public void AddScore(int add)
-    {
-        Score += add;
-        ScoreText.text = "Score: " + Score;
-    }
-
-    public void ReduceLife()
-    {
-        StopLooped("walking");
-        PlaySound("pacdie");
-        GameOverText.text = "PRESS R TO RESPAWN";
-        SetGhostMode(Mode.Waiting);
-        PacLifes--;
-        isGameOver = true;
-    }
-	
+    
 	// Update is called once per frame
 	void Update () {
-        Time.timeScale = timeScale;
-        if (isGameOver)
+        Time.timeScale = timeScale;        
+        if (Life.isGameOver)
         {
             if (Input.GetKeyDown(KeyCode.R))
             {
-                if (PacLifes <= 0)
-                    SceneManager.LoadScene("testes");
+                if (Life.PacLifes <= 0)
+                    SceneManager.LoadScene("Main2");
                 else
                     RestartLevel();
             }
         }
         else
-        {
+        {        
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
                 SetGhostMode(Mode.Chase);
@@ -158,26 +87,27 @@ public class SceneScript : MonoBehaviour {
             }
             else if (ActiveMode == Mode.Fright && Time.time > FrightTime)
             {
-                GhostMult = 100;
+                Score.GhostMult = 100;
                 SetGhostMode(Mode.Scatter);
                 ScatterTime = Time.time + 7;
             }
-
-            if (DotsEated >= 240)
+            
+            if (Score.DotsEated >= 240)
             {
                 Win();
             }
+            
         }
         
     }
 
     void Win()
     {
-        isGameOver = true;
-        PacLifes = 0;
-        GameOverText.text = "YOU WIN\nPRESS R TO RESTART";
-        PlaySound("pacwin");
-        StopLooped("walking");
+        Life.isGameOver = true;
+        Life.PacLifes = 0;
+        Life.GameOverText.text = "YOU WIN\nPRESS R TO RESTART";
+        Sound.PlaySound("pacwin");
+        Sound.StopLooped("walking");
         SetGhostMode(Mode.Waiting);
         pacman.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
         pacman.GetComponent<PacMovement>().enabled = false;
@@ -268,31 +198,28 @@ public class SceneScript : MonoBehaviour {
 
     void RestartLevel()
     {
-        GhostMult = 100;
+        Score.GhostMult = 100;
         blinky.Reset();
         inky.Reset();
         pinky.Reset();
         clyde.Reset();
         ActiveGlobalCount = true;
-        isGameOver = false;
+        Life.isGameOver = false;
         ActiveMode = Mode.Scatter;
         ScatterTime = Time.time + 7;
         ChaseTime = Time.time + 30;
         FrightTime = Time.time + 6;
-        LifeText.text = "Lifes: " + PacLifes;
-        GameOverText.text = "";
+        Life.GameOverText.text = "";
         pacman.GetComponent<PacDie>().Respawm();
         SetGhostMode(Mode.ExitHouse);
-        PlaySound("paclive");
-        PlayLooped("walking");
+        Sound.PlaySound("paclive");
+        Sound.PlayLooped("walking");
     }
 
     public void SetGhostMode(Mode mode)
     {
         if(mode == Mode.Fright)
-        {
             FrightTime = Time.time + 6;
-        }
         if(!(mode == Mode.Waiting || mode == Mode.ExitHouse))
             ActiveMode = mode;
         blinky.ChangeMode(mode);

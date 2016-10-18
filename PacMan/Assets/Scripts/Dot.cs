@@ -3,16 +3,11 @@ using System.Collections;
 
 public class Dot : MonoBehaviour {
     public GameObject pac;
-    public SceneScript sceneScript;
-    // Use this for initialization
-    protected void Start () {
-        //sceneScript = GameObject.FindObjectOfType<SceneScript>();
-        //pac = GameObject.Find("PacMan");
-    }
-	
-	// Update is called once per frame
+    public ScoreController ScoreScript;
+    public SoundController Sounds;
 	protected void Update () {
-        if (pac.GetComponent<MazeMovement>().TilePosition.x == GetTilePosition().x && pac.GetComponent<MazeMovement>().TilePosition.y == GetTilePosition().y)
+        if (pac.GetComponent<MazeMovement>().TilePosition.x == GetTilePosition().x && 
+            pac.GetComponent<MazeMovement>().TilePosition.y == GetTilePosition().y)
         {
             OnEated();
         }
@@ -20,7 +15,8 @@ public class Dot : MonoBehaviour {
 
     public virtual void OnEated()
     {
-        Debug.Log("Eated");
+        Sounds.PlaySound("eatingdot");
+        Destroy(gameObject);
     }
 
     protected Vector2 GetTilePosition()

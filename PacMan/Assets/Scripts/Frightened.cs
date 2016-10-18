@@ -12,7 +12,7 @@ public class Frightened : MonoBehaviour
     public float distance;
     public float ChangeDistance;
     public float velocity;
-    // Use this for initialization
+
     void Start()
     {
         body = GetComponent<Rigidbody2D>();
@@ -27,16 +27,18 @@ public class Frightened : MonoBehaviour
         if(movement == null)
             movement = GetComponent<MazeMovement>();
         direction = movement.GetDirectionVector(movement.direction);
-        transform.position = new Vector3(Mathf.Floor(transform.position.x) + 0.5f, Mathf.Floor(transform.position.y) + 0.5f);
+        transform.position = new Vector3(Mathf.Floor(transform.position.x) + 0.5f, 
+                                         Mathf.Floor(transform.position.y) + 0.5f);
         GetComponent<FollowTarget>().RevertDirection();
     }
 
     // Update is called once per frame
     void Update()
     {
-        Vector2 tilePosition = new Vector2(Mathf.Floor(transform.position.x) + 0.5f, Mathf.Floor(transform.position.y) + 0.5f);
+        Vector2 tilePosition = new Vector2(Mathf.Floor(transform.position.x) + 0.5f, 
+                                           Mathf.Floor(transform.position.y) + 0.5f);
         distance = Vector2.Distance(transform.position, tilePosition);
-        if (distance < ChangeDistance && CanChange)
+        if ((distance < ChangeDistance && CanChange) || body.velocity == Vector2.zero)
         {
             direction = SelectRandomDirection();
             CanChange = false;
@@ -45,36 +47,10 @@ public class Frightened : MonoBehaviour
             body.velocity = direction * velocity;
             
             if (!movement.VerifyDirection(direction, 0.5f))
-            {
                 CanChange = true;
-            }
         }
         if (distance > 0.4f)
-        {
-            CanChange = true;
-        }
-        /*
-        if(!movement.VerifyDirection(direction, 0.5f))
-        {
-            body.velocity = direction * -velocity;
-            transform.position = tilePosition;
-            CanChange = true;
-        }
-        */
-        if(body.velocity == Vector2.zero)
-        {
-            Vector2 newDirection = SelectRandomDirection();
-            CanChange = false;
-            direction = newDirection;
-            //movement.FitToTile();
-            transform.position = tilePosition;
-            body.velocity = direction * velocity;
-
-            if (!movement.VerifyDirection(newDirection, 0.5f))
-            {
-                CanChange = true;
-            }
-        }
+            CanChange = true;        
     }
 
     Vector2[] VerifyReturnDirection()
@@ -109,19 +85,14 @@ public class Frightened : MonoBehaviour
     {
         Vector2[] dirs = VerifyReturnDirection();
         Vector2 SelectedDirection = dirs[Random.Range(0, 3)];
-
         if (movement.VerifyDirection(SelectedDirection, 0.5f))
-        {
             return SelectedDirection;
-        }
         else
         {
             foreach (Vector2 newDirection in dirs)
             {
                 if (movement.VerifyDirection(newDirection, 0.5f))
-                {
                     return newDirection;
-                }
             }
         }
         return Vector2.zero;

@@ -15,8 +15,7 @@ public class FollowTarget : MazeMovement
     public bool DrawTargetLine;
 
     public bool CanChange = true;
-
-    //public Direction nextDirection;
+    
     float distance;
     public float ChangeDistance;
 
@@ -25,7 +24,6 @@ public class FollowTarget : MazeMovement
     // Use this for initialization
     void Start()
     {
-        //Time.timeScale = 0.05f;
         base.Start();
         body = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
@@ -35,39 +33,12 @@ public class FollowTarget : MazeMovement
 
     void OnEnable()
     {
-        transform.position = new Vector3(Mathf.Floor(transform.position.x) + 0.5f, Mathf.Floor(transform.position.y) + 0.5f);
+        transform.position = new Vector3(Mathf.Floor(transform.position.x) + 0.5f, 
+                                         Mathf.Floor(transform.position.y) + 0.5f);
         if(body != null)
             RevertDirection();
         if (anim != null)
             SetAnim();
-    }
-
-    void OnDisable()
-    {
-        body.velocity = -body.velocity;
-    }
-
-    void SetAnim()
-    {
-        Mode mode =  GetComponent<GhostModes>().mode;
-        if(mode != Mode.Eyes)
-        {
-            switch (direction)
-            {
-                case Direction.Right:
-                    anim.SetTrigger("right");
-                    break;
-                case Direction.Left:
-                    anim.SetTrigger("left");
-                    break;
-                case Direction.Up:
-                    anim.SetTrigger("up");
-                    break;
-                case Direction.Down:
-                    anim.SetTrigger("down");
-                    break;
-            }
-        }        
     }
 
     void ChooseDirectionMove()
@@ -110,11 +81,6 @@ public class FollowTarget : MazeMovement
         else
         if (!VerifyDirection(GetDirectionVector(direction), 0.5f))
         {
-            body.velocity = Vector2.zero;
-        }
-        
-        if(body.velocity == Vector2.zero)
-        {
             Direction newDirection = VerifyMinDistance(VerifyAvaliableDirections());
             CanChange = false;
             direction = newDirection;
@@ -123,12 +89,35 @@ public class FollowTarget : MazeMovement
     }
 
     void ChangeDirection(Direction direction)
-    {
-        
+    {        
         SetAnim();
         transform.position = TilePosition.ToWorldPoint();
         body.velocity = GetDirectionVector(direction) * velocity;
     }
+
+    void SetAnim()
+    {
+        Mode mode = GetComponent<GhostModes>().mode;
+        if (mode != Mode.Eyes)
+        {
+            switch (direction)
+            {
+                case Direction.Right:
+                    anim.SetTrigger("right");
+                    break;
+                case Direction.Left:
+                    anim.SetTrigger("left");
+                    break;
+                case Direction.Up:
+                    anim.SetTrigger("up");
+                    break;
+                case Direction.Down:
+                    anim.SetTrigger("down");
+                    break;
+            }
+        }
+    }
+
 
     void DrawLineTarget()
     {
@@ -206,16 +195,6 @@ public class FollowTarget : MazeMovement
         return chooseDirection;
     }
 
-    public void SetTarget(Vector2 target)
-    {
-        Target = target;
-    }
-
-    public void SetScatter()
-    {
-        Target = ScatterTarget;
-    }
-
     public void RevertDirection()
     {
         switch (direction)
@@ -236,7 +215,6 @@ public class FollowTarget : MazeMovement
         body.velocity = GetDirectionVector(direction) * velocity;
     }
 
-
     public bool returning = false;
     public void ReturnHome()
     {
@@ -249,6 +227,16 @@ public class FollowTarget : MazeMovement
             Target = StartPoint;
             velocity = 10;
         }
+    }
+
+    public void SetTarget(Vector2 target)
+    {
+        Target = target;
+    }
+
+    public void SetScatter()
+    {
+        Target = ScatterTarget;
     }
 
     public void OnTriggerStay2D(Collider2D collision)
