@@ -3,10 +3,11 @@ using System.Collections;
 
 public class BlobScript : MonoBehaviour
 {
-    public GameObject ExplosionPrefab, StarPrefab;
+    public GameObject ExplosionPrefab, StarPrefab, TeleportParticles;
     public float velocity, teleportRange;
     Rigidbody2D body;
     SpriteRenderer sprite;
+    Animator anim;
     bool CanJump, Alive;
     // Use this for initialization
     void Start()
@@ -14,7 +15,8 @@ public class BlobScript : MonoBehaviour
         Alive = true;
         body = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
-        GetComponent<DoubleTap>().onDoubleTap += Teleport;
+        anim = GetComponent<Animator>();
+        GetComponent<DoubleTap>().onDoubleTap += StartTeleport;
     }
 
     // Update is called once per frame
@@ -61,9 +63,16 @@ public class BlobScript : MonoBehaviour
         }
     }
 
-    void Teleport(Vector2 touchPosition)
+    void StartTeleport()
     {
-        Vector2 pos = Camera.main.ScreenToWorldPoint(touchPosition);
+        anim.SetTrigger("Teleport");
+        Invoke("Teleport", 0.25f);
+        
+    }
+
+    void Teleport()
+    {
+        Vector2 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         if (pos.y > transform.position.y + teleportRange)
         {
             transform.position = new Vector3(pos.x, transform.position.y + teleportRange);
@@ -72,5 +81,6 @@ public class BlobScript : MonoBehaviour
         {
             transform.position = pos;
         }
+        Instantiate(TeleportParticles, transform.position, Quaternion.identity);
     }
 }

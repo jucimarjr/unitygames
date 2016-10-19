@@ -6,7 +6,7 @@ public class DoubleTap : MonoBehaviour {
     float firstTapTime;
     bool firstTap;
 
-    public delegate void DoubleTapDel(Vector2 mousePosition);
+    public delegate void DoubleTapDel();
     public DoubleTapDel onDoubleTap;
 
     // Use this for initialization
@@ -24,7 +24,7 @@ public class DoubleTap : MonoBehaviour {
                 firstTap = false;
             }else
             {
-                onDoubleTap(Input.mousePosition);
+                onDoubleTap();
             }
         }
 
