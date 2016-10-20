@@ -1,0 +1,23 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2008
+
+Project("{FD9CCF57-2F82-ED89-854F-7901AF8E65F5}") = "FlatBreakout", "Assembly-CSharp.csproj", "{79032AE8-BCEA-DA47-B17D-5F0B1E08C02E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{79032AE8-BCEA-DA47-B17D-5F0B1E08C02E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79032AE8-BCEA-DA47-B17D-5F0B1E08C02E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79032AE8-BCEA-DA47-B17D-5F0B1E08C02E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79032AE8-BCEA-DA47-B17D-5F0B1E08C02E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Assembly-CSharp.csproj
+	EndGlobalSection
+EndGlobal
