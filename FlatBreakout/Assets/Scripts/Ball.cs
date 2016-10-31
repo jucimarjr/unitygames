@@ -54,7 +54,7 @@ public class Ball : MonoBehaviour
 		if (collision.gameObject.CompareTag ("BlockTag")) {
 			GetComponent<AudioSource>().Play();
 			Destroy (collision.gameObject);
-			body.velocity = new Vector2(body.velocity.x + Random.Range(-1, 1), -body.velocity.y);
+			//body.velocity = new Vector2(body.velocity.x + Random.Range(-0.5f, 0.5f), body.velocity.y);
 			score.UpdateScore (10);
 
 			if (GameObject.Find("Blocks").transform.childCount <= 1)
